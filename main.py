@@ -1,5 +1,3 @@
-password = input("Введите пароль: ")
-
 def has_digit(password):
     return any(char.isdigit() for char in password)
 
@@ -16,8 +14,7 @@ def has_upper_letters(password):
     return any(char.isupper() for char in password)
 
 def has_symbols(password):
-    special_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/"
-    return any(char in special_chars for char in password)
+    return any(not char.isalnum() for char in password)
 
 def calculate_password_score(password):
     checks = [
@@ -28,10 +25,16 @@ def calculate_password_score(password):
         has_symbols,
     ]
 
-    score = max((len(password) - 8) / 2, 0)
+    score = 0
 
     score += sum(2 for check in checks if check(password))
 
-    return min(score, 10)
+    return score
 
-print("Рейтинг пароля:", calculate_password_score(password))
+def main():
+    password = input("Введите пароль: ")
+    score = calculate_password_score(password)
+    print("Рейтинг пароля:", score)
+
+if __name__ == "__main__":
+    main()
